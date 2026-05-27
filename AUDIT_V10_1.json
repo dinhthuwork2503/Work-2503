@@ -1,0 +1,30 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "handlers": {
+      "douyin:processVideo": 1,
+      "douyin:pickFfmpegExe": 1,
+      "aiEngineer:ask": 1,
+      "aiWeb:open": 1
+    },
+    "gemini_transcribe": true,
+    "gemini_file_upload": true,
+    "html_transcript_provider": true,
+    "renderer_transcript_provider": true,
+    "web_ai_shortcuts": true
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "name": "jordan-task-manager",
+  "version": "10.6.0",
+  "description": "JTM v10.6 - Sub Douyin/Viet with flexible transcript models and web fallback helpers",
+  "main": "src/main.js",
+  "author": "Jordan Task Manager",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win nsis portable --publish never",
+    "build:portable": "electron-builder --win portable --publish never",
+    "build:setup": "electron-builder --win nsis --publish never"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.jordan.taskmanager",
+    "productName": "Jordan Task Manager",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Jordan Task Manager-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Jordan Task Manager"
+    },
+    "artifactName": "JTM-v${version}-${arch}.${ext}"
+  },
+  "productName": "Jordan Task Manager"
+}

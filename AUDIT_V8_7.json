@@ -1,0 +1,35 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "handlers": {
+      "longf:openAdmin": 1,
+      "longf:checkSession": 1,
+      "longf:extractApiMap": 1,
+      "longf:uploadVideoDirect": 1,
+      "longf:createVideoDirect": 1,
+      "longf:bulkCreateVideoDirect": 1
+    },
+    "preload": {
+      "longfOpenAdmin": true,
+      "longfCheckSession": true,
+      "longfExtractApiMap": true,
+      "longfUploadVideoDirect": true,
+      "longfCreateVideoDirect": true,
+      "longfBulkCreateVideoDirect": true
+    }
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

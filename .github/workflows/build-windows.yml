@@ -1,0 +1,39 @@
+name: Build JTM v10.6 EXE
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: JTM-v10-6-Windows
+        uses: actions/checkout@v4
+
+      - name: JTM-v10-6-Windows
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: JTM-v10-6-Windows
+        run: npm install --no-audit --no-fund
+
+      - name: JTM-v10-6-Windows
+        run: |
+          node --check src/main.js
+          node --check src/preload.js
+          node --check src/renderer.js
+
+      - name: JTM-v10-6-Windows
+        run: npm run build
+
+      - name: JTM-v10-6-Windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: JTM-v10-6-Windows
+          path: release/*

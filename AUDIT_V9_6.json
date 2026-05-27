@@ -1,0 +1,29 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "handlers": {
+      "auth:login": 1,
+      "auth:createUser": 1,
+      "longf:openAdmin": 1,
+      "longf:checkSession": 1,
+      "longf:createVideoDirect": 1
+    },
+    "remember_checkbox_html": true,
+    "remember_helpers": true,
+    "startup_force_logout": true
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

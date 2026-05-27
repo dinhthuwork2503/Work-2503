@@ -1,0 +1,29 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "handlers": {
+      "ttsOhFree:open": 1,
+      "ttsOhFree:copyText": 1,
+      "aiEngineer:ask": 1,
+      "douyin:processVideo": 1
+    },
+    "gemini_smart_fallback": true,
+    "tts_handlers": true,
+    "tts_ui": true,
+    "tts_renderer": true
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

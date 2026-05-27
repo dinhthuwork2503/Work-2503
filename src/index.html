@@ -1,0 +1,855 @@
+
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: file:; connect-src https://api.openai.com https://generativelanguage.googleapis.com https://*.supabase.co https://script.google.com https://script.googleusercontent.com;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jordan Task Manager</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  
+
+  <div id="authGate" class="auth-gate hidden">
+
+    <audio id="loginThemeAudio" src="./assets/longf_theme_song.wav" preload="auto" loop></audio>
+    <div class="login-music-control" id="loginMusicControl">
+      <button id="loginMusicToggle" type="button" title="Bật/tắt nhạc">🔊</button>
+      <input id="loginMusicVolume" type="range" min="0" max="100" value="35" title="Âm lượng">
+      <span id="loginMusicLabel">Music</span>
+    </div>
+
+    <div class="auth-bg"></div>
+    <div class="auth-card auth-card-team">
+      <div class="auth-brand">
+        <div class="auth-logo">J</div>
+        <div>
+          <h1>Jordan Task Manager</h1>
+          <p>Đăng nhập để sử dụng app</p>
+        </div>
+      </div>
+      <div class="auth-team-login">
+        <h2>Đăng nhập</h2>
+        <p class="small-note">Nhập tài khoản được admin cấp. Cấu hình hệ thống đã được tích hợp sẵn trong app.</p>
+        <label>Email</label>
+        <input id="authEmail" type="email" placeholder="name@company.com">
+        <label>Mật khẩu</label>
+        <input id="authPassword" type="password" placeholder="••••••••">
+        <label class="remember-login-row"><input id="authRememberLogin" type="checkbox"> <span>Ghi nhớ đăng nhập trên máy này</span></label>
+        <button id="authLoginBtn" class="blue-btn auth-main-btn">Đăng nhập</button>
+        <button id="showDevAuthSetupBtn" class="auth-dev-link" type="button">Thiết lập hệ thống</button>
+        <div id="authDevSetup" class="auth-dev-setup hidden">
+          <div class="auth-dev-box">
+            <h3>Thiết lập dành cho admin/dev</h3>
+            <p class="small-note">Chỉ dùng khi build app lần đầu hoặc cần thay Supabase project. Thành viên team không cần phần này.</p>
+            <label>Supabase URL</label>
+            <input id="authSupabaseUrl" placeholder="https://xxxx.supabase.co">
+            <label>Supabase Anon Key</label>
+            <input id="authSupabaseKey" type="password" placeholder="eyJ...">
+            <div id="bootstrapAdminPanel" class="hidden">
+              <hr>
+              <h3>Admin đầu tiên</h3>
+              <p class="small-note">Chỉ hiện khi bật showBootstrapAdmin trong src/team_config.json.</p>
+              <label>Tên admin</label>
+              <input id="bootstrapDisplayName" placeholder="Jordan Admin">
+              <label>Email admin</label>
+              <input id="bootstrapEmail" type="email" placeholder="admin@company.com">
+              <label>Mật khẩu admin</label>
+              <input id="bootstrapPassword" type="password" placeholder="Tạo mật khẩu mạnh">
+              <button id="bootstrapAdminBtn">Tạo admin đầu tiên</button>
+            </div>
+          </div>
+        </div>
+        <p id="authMessage" class="auth-message">Sẵn sàng đăng nhập.</p>
+      </div>
+    </div>
+  </div>
+<div id="jtmSplashScreen" class="jtm-splash" aria-label="Welcome to JTM">
+    <div class="jtm-splash-bg"></div>
+    <div class="jtm-splash-overlay"></div>
+    <div class="jtm-splash-content">
+      <div class="jtm-splash-badge">Jordan Task Manager</div>
+      <h1>Welcome to JTM!</h1>
+      <p>Tối ưu công việc, đăng tải nhanh hơn, quản lý gọn hơn.</p>
+      <div class="jtm-splash-loader">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="logo"><span class="logo-mark">◆</span><span>JORDAN</span></div>
+
+      <nav class="nav">
+        <button class="nav-item" data-view="accounts">▦ Quản lý tài khoản</button>
+        <button class="nav-item" data-view="videos">▣ Quản lý video</button>
+        <button class="nav-item" data-view="proxy">◇ Quản lý proxy</button>
+
+        <div class="nav-group">
+          <button class="nav-item primary" data-view="posting">▣ Chức năng đăng video</button>
+          <button class="nav-sub active" data-platform="tiktok">Đăng Tiktok</button>
+          <button class="nav-sub" data-platform="facebook">Đăng Reels Profile</button>
+          <button class="nav-sub" data-platform="facebook">Đăng Reels Fanpage</button>
+          <button class="nav-sub" data-platform="facebook">Đăng Reels Instagram</button>
+          <button class="nav-sub" data-platform="youtube">Đăng Youtube Short</button>
+        </div>
+
+        <button class="nav-item" data-view="bot">🤖 Bot/AI đăng bài</button>
+        <button class="nav-item" data-view="longf">🎬 Đăng Video LongF</button>
+        <button class="nav-item" data-view="douyin">🎞️ Sub Douyin/Việt</button>
+        <button class="nav-item" data-view="ttsOhFree">🎙️ Voice Việt</button>
+        <button class="nav-item" data-view="ai">🤖 ChatGPT / Gemini</button>
+        <button class="nav-item" data-view="image">🖼 Image AI</button>
+        <button class="nav-item" data-view="cloud">☁ Cloud Sync</button>
+        <button class="nav-item" data-view="diagnostics">✅ Kiểm tra hệ thống</button>
+        <button id="userAdminNav" class="nav-item admin-only hidden" data-view="users">👥 Quản lý thành viên</button>
+        <button id="aiEngineerNav" class="nav-item admin-only hidden" data-view="aiEngineer">🧠 Trợ lý AI</button>
+        <button class="nav-item" data-view="settings">⚙ Cài đặt</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="social-row"><span>💬</span><span>Zalo</span><span>f</span><span>🌐</span></div>
+        <div class="version-card">
+          <p>Phiên bản cài đặt</p><strong>4.0 AI Bot</strong>
+          <p>Ngày cập nhật</p><strong>22/05/2026</strong>
+          <p>Desktop Edition</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="edge-profile">
+          <label>Microsoft Edge profile</label>
+          <select id="edgeProfileSelect"></select>
+          <button id="refreshEdgeProfiles">Refresh</button>
+        </div>
+
+        <div class="top-actions">
+          <label class="switch-label">Không đổi Proxy <input id="proxyToggle" type="checkbox" /></label>
+          <button id="openTikTokProfile" class="icon-btn" title="Mở TikTok Upload bằng profile">TT</button>
+          <button id="openFacebookProfile" class="icon-btn" title="Mở Facebook Business bằng profile">FB</button>
+          <button class="icon-btn">⚙</button>
+          <div class="user"><div class="avatar" id="currentUserAvatar">J</div><div><strong id="currentUserName">Chưa đăng nhập</strong><small id="currentUserRole">Auth required</small></div></div><button id="logoutBtn" class="icon-btn" title="Đăng xuất">⎋</button>
+        </div>
+      </header>
+
+      <section id="postingView" class="dashboard view">
+        <section class="panel accounts-panel">
+          <div class="panel-title-row"><h2>Danh sách tài khoản</h2></div>
+
+          <div class="toolbar">
+            <button id="manageCategoryBtn" class="green-btn">Quản lý danh mục ▾</button>
+            <input id="accountSearch" class="search-input" placeholder="Tìm ID/tên tài khoản...">
+            <div class="counter">Tổng số tài khoản: <b id="totalAccounts">0</b> &nbsp; Đã chọn: <b id="selectedAccounts">0</b></div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="account-table">
+              <thead><tr>
+                <th><input id="selectAll" type="checkbox" checked></th>
+                <th>STT</th><th>Họ và tên</th><th>ID tài khoản</th><th>Trạng thái</th><th>Proxy</th><th>Kết quả</th><th>Hành động</th>
+              </tr></thead>
+              <tbody id="accountsBody"></tbody>
+            </table>
+          </div>
+
+          <footer class="table-footer">
+            <span id="tableInfo">Hiển thị 0 dữ liệu</span>
+            <div>
+              <button id="addAccountBtn">Thêm</button>
+              <button id="editAccountBtn">Sửa</button>
+              <button id="importAccountsBtn">Nhập CSV</button>
+              <button id="exportAccountsBtn">Xuất CSV</button>
+              <button id="deleteAccountBtn">Xóa</button>
+            </div>
+          </footer>
+        </section>
+
+        <aside class="panel config-panel">
+          <div class="config-head">
+            <h2 id="configTitle">Cấu hình đăng Tiktok</h2>
+            <button id="startBtn" class="start-btn">Bắt đầu</button>
+            <select id="scriptSelect"><option>Chọn kịch bản</option><option>Đăng nhanh</option><option>Đăng theo lịch</option><option>Đăng ngẫu nhiên</option></select>
+            <button class="blue-btn square">＋</button>
+          </div>
+
+          <div class="config-scroll">
+            <div class="config-section">
+              <h3>Cấu hình chung</h3>
+              <div class="form-row"><label>Khoảng cách giữa hai hành động</label><input id="delayMin" type="number" value="5"><span>đến</span><input id="delayMax" type="number" value="10"><span>giây</span></div>
+              <div class="form-row"><label>Chuyển tài khoản nếu lỗi liên tiếp</label><input id="switchErrors" type="number" value="30"><span>lần</span></div>
+              <label class="check-row"><input id="repeatAction" type="checkbox"> Lặp lại hành động</label>
+            </div>
+
+            <div class="config-section">
+              <h3>Cấu hình đăng video</h3>
+              <div class="form-row"><label>Mỗi tài khoản đăng</label><input id="videoMin" type="number" value="1"><span>đến</span><input id="videoMax" type="number" value="3"><span>video</span></div>
+              <div class="form-row"><label>Gắn thẻ vào video</label><input id="tagMin" type="number" value="0"><span>đến</span><input id="tagMax" type="number" value="5"><span>tài khoản</span></div>
+              <label class="radio-row"><input type="radio" name="idMode" checked> Chọn từ danh sách</label>
+              <div class="inline-options"><label><input type="radio" name="idOrder" checked> Ngẫu nhiên ID</label><label><input type="radio" name="idOrder"> Lần lượt theo danh sách</label></div>
+              <button class="blue-btn">Chọn từ danh sách 📋</button>
+              <label class="check-row"><input type="checkbox"> Tương tác sau khi đăng video</label>
+            </div>
+
+            <div class="config-section">
+              <h3>Cấu hình video</h3>
+              <label class="check-row"><input id="autoFillTikTok" type="checkbox" checked> Tự chèn video + caption vào TikTok Studio nếu có thể</label>
+              <div class="file-row"><input id="selectedVideoPath" placeholder="Chưa chọn video" readonly><button id="pickVideoBtn">Chọn video</button><button id="clearSelectedVideoBtn">Xóa video</button></div>
+              <textarea id="captionBox" placeholder="Nhập caption hoặc để trống..."></textarea>
+              <div class="button-row"><button id="addTiktokHash">Hashtag TikTok</button><button id="addFacebookHash">Hashtag Facebook</button><button id="clearCaption">Xóa caption</button></div>
+            </div>
+
+            <div class="config-section">
+              <h3>ChatGPT / Gemini nhanh</h3>
+              <div class="button-row"><button id="chatgptWebBtn">ChatGPT App</button><button id="geminiWebBtn">Gemini App</button><button id="openaiBillingBtn">OpenAI Billing</button><button id="geminiQuotaBtn">Gemini Quota</button></div>
+            </div>
+
+            <div class="config-footer"><button id="resetConfigBtn" class="red-btn">Reset cấu hình</button><button id="saveConfigBtn" class="blue-btn">Lưu cấu hình</button></div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="accountsView" class="hidden full-panel view">
+        <h2>Quản lý tài khoản</h2>
+        <p>Thêm, sửa, nhập/xuất và gắn proxy cho tài khoản.</p>
+        <div class="button-row"><button id="accAdd2" class="blue-btn">Thêm tài khoản</button><button id="accImport2">Nhập CSV</button><button id="accExport2">Xuất CSV</button></div>
+        <div class="large-list" id="accountsList"></div>
+      </section>
+
+      <section id="videosView" class="hidden full-panel view">
+        <h2>Quản lý video</h2>
+        <p>Quản lý thư mục video, scan video, mở video/thư mục và chọn video cho workflow đăng.</p>
+        <div class="file-row video-actions-row">
+          <input id="videoFolderPath" placeholder="Chưa chọn thư mục video" readonly>
+          <button id="chooseVideoFolderBtn">Chọn thư mục</button>
+          <button id="scanVideosBtn" class="blue-btn">Quét video</button>
+          <button id="clearVideoFolderBtn">Xóa thư mục</button>
+          <button id="clearVideoListBtn" class="red-btn">Xóa danh sách</button>
+        </div>
+        <p class="small-note">App sẽ không tự hiện lại thư mục video cũ khi mở lên. Chỉ khi bạn chọn thư mục và bấm quét, danh sách video mới hiển thị.</p>
+        <div class="table-wrap video-table-wrap"><table class="account-table"><thead><tr><th>STT</th><th>Tên video</th><th>Dung lượng</th><th>Thư mục</th><th>Hành động</th></tr></thead><tbody id="videosBody"><tr><td colspan="5" class="center muted-cell">Chưa quét video.</td></tr></tbody></table></div>
+      </section>
+
+      <section id="proxyView" class="hidden full-panel view">
+        <h2>Quản lý proxy</h2>
+        <p>Lưu danh sách proxy, gán proxy cho tài khoản, nhập/xuất proxy CSV/TXT.</p>
+        <div class="button-row"><button id="addProxyBtn" class="blue-btn">Thêm proxy</button><button id="importProxyBtn">Nhập proxy</button><button id="exportProxyBtn">Xuất proxy</button><button id="assignProxyBtn">Gán proxy cho tài khoản đã chọn</button></div>
+        <div class="table-wrap video-table-wrap"><table class="account-table"><thead><tr><th>STT</th><th>Proxy</th><th>Ghi chú</th><th>Trạng thái</th><th>Hành động</th></tr></thead><tbody id="proxyBody"></tbody></table></div>
+      </section>
+
+      <section id="longfView" class="hidden full-panel view">
+        <h2>Đăng Video LongF</h2>
+        <p>BOT/AI hỗ trợ đăng video LongF hàng loạt: chọn video, tự upload, tự nhận video file path, chọn category/author, chọn Publish time để lên lịch đăng, chọn cover thumbnail và đăng bằng API.</p>
+
+        <div class="longf-layout">
+          <div class="longf-left ai-card">
+            <h3>Video & Cover</h3>
+
+            <div class="longf-upload-box" id="longfVideoDrop">
+              <div id="longfVideoPreview" class="longf-video-preview">
+                <div class="upload-icon">⇧</div>
+                <p>Chọn một hoặc nhiều video MP4/MOV</p>
+                <small>Đăng lẻ hoặc tạo queue hàng loạt</small>
+              </div>
+            </div>
+
+            <div class="button-row">
+              <button id="longfChooseVideosBtn" class="blue-btn">Chọn video</button>
+              <button id="longfUploadSelectedBtn">Upload video lấy path</button>
+              <button id="longfClearSelectedBtn" class="danger-lite">Xóa video</button>
+            </div>
+
+            <h3 style="margin-top:18px">Select main image <span class="pink-note">(540*960 px)</span></h3>
+            <p class="small-note">Chọn ảnh cover/thumbnail cho video (.jpg, .png, .webp). Nếu không chọn, LongF có thể dùng ảnh mặc định từ video upload.</p>
+            <div class="longf-cover-grid" id="longfCoverGrid">
+              <div class="longf-cover-card muted-cell">Chưa chọn ảnh cover.</div>
+            </div>
+            <div class="button-row">
+              <button id="longfChooseMainImageBtn">Chọn ảnh cover</button>
+              <button id="longfClearCoverBtn" class="danger-lite">Xóa cover</button>
+            </div>
+          </div>
+
+          <div class="longf-right ai-card">
+            <h3>Thông tin bài đăng</h3>
+
+            <label>Category</label>
+            <select id="longfCategory"><option value="">-- Category --</option></select>
+
+            <label>Title</label>
+            <textarea id="longfDefaultTitle" placeholder="Nhập title/caption. Có thể dùng {filename}."></textarea>
+
+            <div class="longf-two-cols">
+              <div>
+                <label>Author</label>
+                <select id="longfAuthor"><option value="">-- Random selection --</option></select>
+              </div>
+              <div>
+                <label>Publish time / Lên lịch đăng</label>
+                <input id="longfPublishTime" type="datetime-local">
+                <p class="small-note">Thời gian này sẽ được gửi lên LongF để lên lịch video. Nếu để trống, app dùng giờ Windows hiện tại.</p>
+              </div>
+            </div>
+
+            <label>Main image <span class="pink-note">(540*960 px)</span></label>
+            <input id="longfImagePathField" placeholder="Cover image path" readonly>
+
+            <label>Video file path</label>
+            <input id="longfVideoFilePathField" placeholder="Sau khi upload sẽ hiện link https://img.longf.vn/upload/videos/..." readonly>
+
+            <div class="longf-status-row">
+              <label><input type="radio" name="longfStatusRadio" value="on" checked> On</label>
+              <label><input type="radio" name="longfStatusRadio" value="off"> Off</label>
+            </div>
+
+            <label>Hashtag mặc định</label>
+            <input id="longfDefaultHashtag" placeholder="#longfinance #video #news">
+
+            <div class="button-row">
+              <button id="longfOpenAdminBtn">Mở LongF Admin / Đăng nhập</button>
+              <button id="longfCheckSessionBtn">Kiểm tra đăng nhập</button>
+              <button id="longfApiDiscoveryBtn">Lấy category/author</button>
+              <button id="longfSyncTimeBtn">Lấy giờ hiện tại</button>
+            </div>
+
+            <div class="button-row">
+              <button id="longfAiSuggestBtn">AI/BOT gợi ý title + hashtag</button>
+              <button id="longfGenerateFromVideosBtn">Tạo queue</button>
+              <button id="longfRunApiQueueBtn" class="blue-btn">Đăng/Lên lịch hàng loạt bằng API</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-card cloud-status-card">
+          <h3>Queue đăng LongF</h3>
+          <p class="small-note">Lưu ý upload: nếu video quá lớn, server LongF có thể trả lỗi 413 Request Entity Too Large. Hãy xuất MP4 H.264 dung lượng thấp hơn trước khi đăng.</p>
+          <p class="small-note">Publish time / Lịch đăng trong từng dòng là thời gian lên lịch riêng cho video đó. Khi đăng/gửi lịch thành công, app sẽ tự xóa video khỏi queue và reset về trạng thái ban đầu.</p>
+          <div class="button-row">
+            <button id="longfAddManualBtn">Thêm bài thủ công</button>
+            <button id="longfClearQueueBtn" class="red-btn">Xóa queue</button>
+            <button id="longfResetQueueBtn" class="red-btn">Reset LongF</button>
+            <button id="longfRunQueueBtn">Fallback web automation</button>
+            <button id="longfExportQueueBtn">Xuất CSV queue</button>
+          </div>
+
+          <div class="table-wrap video-table-wrap">
+            <table class="account-table">
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Video</th>
+                  <th>Cover/Thumb</th>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Author</th>
+                  <th>Publish time / Lịch đăng</th>
+                  <th>Video file path</th>
+                  <th>Status</th>
+                  <th>Kết quả</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="longfQueueBody">
+                <tr><td colspan="11" class="center muted-cell">Chưa có bài trong queue.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <textarea id="longfLog" readonly>LongF log.</textarea>
+        </div>
+      </section>
+
+
+      <section id="aiView" class="hidden full-panel view">
+        <h2>ChatGPT / Gemini</h2>
+        <p>Chat bằng API hoặc mở web app bằng Microsoft Edge profile đã chọn để dùng tài khoản Plus/Pro.</p>
+        <div class="ai-grid">
+          <div class="ai-card">
+            <h3>API Chat</h3>
+            <label>OpenAI API key</label><input id="openaiKey" type="password">
+            <label>OpenAI model</label><select id="openaiModel"></select>
+            <label>Gemini API key</label><input id="geminiKey" type="password">
+            <label>Gemini model</label><select id="geminiModel"></select>
+            <textarea id="aiPrompt" placeholder="Nhập prompt..."></textarea>
+            <div class="button-row"><button id="askOpenAI" class="blue-btn">Hỏi OpenAI</button><button id="askGemini" class="blue-btn">Hỏi Gemini</button></div>
+          </div>
+          <div class="ai-card">
+            <h3>Kết quả</h3>
+            <textarea id="aiOutput" readonly></textarea>
+            <div class="button-row"><button id="copyAI">Copy</button><button id="openChatGPTWeb">ChatGPT Web</button><button id="openGeminiWeb">Gemini Web</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="imageView" class="hidden full-panel view">
+        <h2>Image AI</h2>
+        <p>Tạo ảnh trực tiếp bằng OpenAI hoặc Gemini API. Nếu API hết quota, hãy dùng ChatGPT/Gemini Web App bằng Edge profile.</p>
+        <div class="ai-grid">
+          <div class="ai-card">
+            <h3>OpenAI Image</h3>
+            <label>OpenAI Image API key</label><input id="imageOpenAIKey" type="password">
+            <label>Model</label><select id="imageOpenAIModel"></select>
+            <label>Size</label><select id="imageSize"><option>1024x1024</option><option>1024x1536</option><option>1536x1024</option><option>auto</option></select>
+            <label>Prompt tạo ảnh</label><textarea id="imagePrompt" placeholder="Nhập prompt tạo ảnh..."></textarea>
+            <div class="button-row"><button id="chooseOutputDir">Chọn thư mục lưu</button><button id="generateOpenAIImage" class="blue-btn">Tạo bằng OpenAI</button></div>
+            <p id="outputDirText"></p>
+          </div>
+
+          <div class="ai-card">
+            <h3>Gemini Image</h3>
+            <label>Gemini API key</label><input id="imageGeminiKey" type="password">
+            <label>Model</label><select id="imageGeminiModel"></select>
+            <label>Prompt tạo ảnh</label><textarea id="geminiImagePrompt" placeholder="Nhập prompt tạo ảnh bằng Gemini..."></textarea>
+            <div class="button-row">
+              <button id="generateGeminiImage" class="blue-btn">Tạo bằng Gemini</button>
+              <button id="openGeminiImageWeb">Mở Gemini Web</button>
+              <button id="geminiImageQuota">Gemini Quota</button>
+            </div>
+          </div>
+
+          <div class="ai-card image-result-card">
+            <h3>Kết quả ảnh</h3><p id="imageResult">Chưa có ảnh.</p>
+            <div class="button-row"><button id="openImageFile">Mở ảnh</button><button id="openImageFolder">Mở thư mục</button></div>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="cloudView" class="hidden full-panel view">
+        <h2>Cloud Sync</h2>
+        <p>Đồng bộ dữ liệu Jordan Task Manager lên Supabase và xuất báo cáo sang Google Sheets.</p>
+
+        <div class="settings-grid">
+          <div class="ai-card">
+            <h3>Supabase Database</h3>
+            <label>Supabase URL</label>
+            <input id="supabaseUrl" placeholder="https://xxxx.supabase.co">
+            <label>Supabase Anon Key</label>
+            <input id="supabaseAnonKey" type="password" placeholder="eyJ...">
+            <div class="button-row">
+              <button id="testSupabaseBtn" class="blue-btn">Test Connection</button>
+              <button id="pullCloudBtn">Pull từ Cloud</button>
+              <button id="pushCloudBtn" class="blue-btn">Push lên Cloud</button>
+            </div>
+            <p class="small-note">Dữ liệu được lưu local trước, sau đó đồng bộ lên Supabase khi bấm Push.</p>
+          </div>
+
+          <div class="ai-card">
+            <h3>Google Sheets Dashboard</h3>
+            <label>Google Apps Script Webhook URL</label>
+            <input id="googleSheetWebhook" placeholder="https://script.google.com/macros/s/.../exec">
+            <div class="button-row">
+              <button id="exportSheetBtn" class="blue-btn">Export to Google Sheets</button>
+              <button id="openAppsScriptGuide">Mở hướng dẫn Apps Script</button>
+            </div>
+            <p class="small-note">Google Sheets dùng để xem số liệu, dashboard, log; Supabase vẫn là database chính.</p>
+          </div>
+        </div>
+
+        <div class="ai-card cloud-status-card">
+          <h3>Cloud Sync Log</h3>
+          <textarea id="cloudLog" readonly>Chưa đồng bộ.</textarea>
+        </div>
+      </section>
+
+
+
+      <section id="botView" class="hidden full-panel view">
+        <h2>Bot/AI đăng bài</h2>
+        <p>AI hỗ trợ nhận diện tên video, tạo caption/hashtag, lập hàng đợi nhiều video và thử tự chèn video/caption vào TikTok/Facebook. App vẫn để bạn tự bấm Đăng/Lên lịch ở bước cuối để tránh rủi ro tài khoản.</p>
+
+        <div class="settings-grid">
+          <div class="ai-card">
+            <h3>1. Chọn nguồn video</h3>
+            <div class="button-row">
+              <button id="botPickVideos" class="blue-btn">Chọn nhiều video</button>
+              <button id="botUseScannedVideos">Dùng video đã quét</button><button id="botClearScannedVideos">Xóa video đã quét</button>
+              <button id="botClearQueue" class="red-btn">Xóa queue</button>
+            </div>
+            <p class="small-note">Có thể chọn nhiều video cùng lúc. Bot sẽ tạo queue riêng cho từng video.</p>
+          </div>
+
+          <div class="ai-card">
+            <h3>2. Cấu hình AI</h3>
+            <label>Nền tảng</label>
+            <select id="botPlatform">
+              <option value="tiktok">TikTok</option>
+              <option value="facebook">Facebook / Reels</option>
+              <option value="youtube">YouTube Shorts</option>
+            </select>
+            <label>AI Provider</label>
+            <select id="botAIProvider">
+              <option value="local">Local AI rule - không cần API</option>
+              <option value="openai">OpenAI</option>
+              <option value="gemini">Gemini</option>
+            </select>
+            <label>Giọng caption</label>
+            <select id="botCaptionTone">
+              <option value="news">Tin tức / tài chính</option>
+              <option value="genz">Gen Z / viral</option>
+              <option value="sales">Bán hàng / CTA</option>
+              <option value="neutral">Trung tính</option>
+            </select>
+            <div class="button-row">
+              <button id="botGenerateCaptions" class="blue-btn">Tạo caption + hashtag</button>
+              <button id="botRunQueue" class="green-btn">Chạy queue upload</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-card cloud-status-card">
+          <h3>Posting Queue</h3>
+          <div class="table-wrap video-table-wrap bot-table-wrap">
+            <table class="account-table">
+              <thead><tr><th>STT</th><th>Video</th><th>Kênh/Profile</th><th>Caption + Hashtag</th><th>Trạng thái</th><th>Hành động</th></tr></thead>
+              <tbody id="botQueueBody"></tbody>
+            </table>
+          </div>
+          <textarea id="botLog" readonly>Chưa chạy bot.</textarea>
+        </div>
+      </section>
+
+      <section id="diagnosticsView" class="hidden full-panel view">
+        <h2>Kiểm tra hệ thống</h2>
+        <p>Chạy kiểm tra nhanh toàn bộ module chính trước khi dùng: dữ liệu local, Edge profile, URL nền tảng, quyền ghi cache, Cloud Sync, form tài khoản/proxy và TikTok upload preflight.</p>
+        <div class="button-row">
+          <button id="runSelfCheckBtn" class="blue-btn">Chạy kiểm tra hệ thống</button>
+          <button id="copySelfCheckBtn">Copy kết quả</button>
+        </div>
+        <div id="selfCheckSummary" class="qa-summary">Chưa kiểm tra.</div>
+        <div class="table-wrap qa-table-wrap">
+          <table class="account-table">
+            <thead><tr><th>Module</th><th>Trạng thái</th><th>Chi tiết</th></tr></thead>
+            <tbody id="selfCheckBody"></tbody>
+          </table>
+        </div>
+        <div class="ai-card cloud-status-card">
+          <h3>Checklist thao tác thủ công</h3>
+          <ol class="qa-list">
+            <li>Quản lý tài khoản: Thêm → Sửa → Xóa → Nhập/Xuất CSV.</li>
+            <li>Quản lý proxy: Thêm → Sửa → Xóa → Gán proxy cho tài khoản đã chọn.</li>
+            <li>Quản lý video: Chọn thư mục → Quét video → Chọn video.</li>
+            <li>Đăng TikTok: Chọn Edge profile → chọn video/caption → Bắt đầu → kiểm tra video/caption đã được chèn chưa.</li>
+            <li>Cloud Sync: Test Supabase → Push → Pull → Export Google Sheets.</li>
+            <li>AI: mở ChatGPT/Gemini Web bằng đúng Edge profile, test API nếu có key.</li>
+          </ol>
+        </div>
+      </section>
+
+      
+      <section id="usersView" class="hidden full-panel view">
+        <h2>Quản lý thành viên</h2>
+        <p>Chỉ admin được tạo tài khoản, phân quyền và khóa/mở thành viên. Thành viên chỉ dùng các tính năng hiện có.</p>
+
+        <div class="settings-grid">
+          <div class="ai-card">
+            <h3>Tạo / cập nhật tài khoản</h3>
+            <label>Email</label><input id="adminUserEmail" type="email" placeholder="member@company.com">
+            <label>Tên hiển thị</label><input id="adminUserName" placeholder="Tên thành viên">
+            <label>Mật khẩu mới</label><input id="adminUserPassword" type="password" placeholder="Để trống nếu chỉ cập nhật">
+            <label>Quyền</label><select id="adminUserRole"><option value="member">Member</option><option value="admin">Admin</option></select>
+            <label>Trạng thái</label><select id="adminUserStatus"><option value="active">Active</option><option value="disabled">Disabled</option></select>
+            <div class="button-row">
+              <button id="createUserBtn" class="blue-btn">Tạo tài khoản</button>
+              <button id="updateUserBtn">Cập nhật</button>
+              <button id="deleteUserBtn" class="red-btn">Xóa</button>
+            </div>
+          </div>
+
+          <div class="ai-card">
+            <h3>Danh sách tài khoản</h3>
+            <div class="button-row"><button id="refreshUsersBtn" class="blue-btn">Tải danh sách</button></div>
+            <div class="table-wrap">
+              <table class="account-table">
+                <thead><tr><th>Email</th><th>Tên</th><th>Quyền</th><th>Trạng thái</th><th>Đăng nhập cuối</th></tr></thead>
+                <tbody id="usersTableBody"></tbody>
+              </table>
+            </div>
+            <textarea id="authLogBox" readonly>Chưa có log.</textarea>
+          </div>
+        </div>
+      </section>
+
+
+      
+      <section id="douyinView" class="hidden full-panel view">
+        <h2>Sub Douyin/Việt</h2>
+        <p>Chọn video tiếng Trung từ máy, app sẽ tách audio, nhận diện lời thoại, dịch sang tiếng Việt và xuất SRT/TXT. Có thể xuất thêm MP4 gắn phụ đề Việt nếu máy có FFmpeg. Nếu Gemini 503/quá tải, app sẽ tự retry và đổi model fallback. Nếu API bị giới hạn, có thể dùng nút web fallback để mở ChatGPT/Gemini web trong app và copy prompt xử lý thủ công.</p>
+
+        <div class="settings-grid">
+          <div class="ai-card">
+            <h3>Thiết lập dịch</h3>
+            <label>OpenAI API Key <span class="muted">(bắt buộc cho nhận diện giọng nói)</span></label>
+            <input id="douyinOpenAIKey" type="password" placeholder="sk-...">
+            <label>Gemini API Key <span class="muted">(tuỳ chọn nếu muốn dịch bằng Gemini)</span></label>
+            <input id="douyinGeminiKey" type="password" placeholder="AIza...">
+            <label>Nhận diện giọng nói / Transcript</label>
+            <select id="douyinTranscriptProvider">
+              <option value="auto">Auto: OpenAI lỗi thì dùng Gemini</option>
+              <option value="openai">OpenAI Whisper</option>
+              <option value="gemini">Gemini Audio</option>
+            </select>
+            <label>Model OpenAI transcript</label>
+            <select id="douyinOpenAITranscriptModel">
+              <option value="whisper-1">whisper-1 ổn định</option>
+              <option value="gpt-4o-mini-transcribe">gpt-4o-mini-transcribe thử nghiệm</option>
+              <option value="gpt-4o-transcribe">gpt-4o-transcribe thử nghiệm</option>
+              <option value="custom">Nhập custom bên dưới</option>
+            </select>
+            <input id="douyinOpenAITranscriptCustomModel" placeholder="Custom OpenAI transcript model nếu cần">
+
+            <label>Model Gemini transcript</label>
+            <select id="douyinGeminiTranscriptModel">
+              <option value="">Auto Gemini model</option>
+              <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+              <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+              <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+              <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite</option>
+            </select>
+            <input id="douyinGeminiTranscriptCustomModel" placeholder="Custom Gemini transcript model nếu cần">
+
+            <label>Model dịch</label>
+            <select id="douyinProvider">
+              <option value="openai">OpenAI dịch</option>
+              <option value="gemini">Gemini dịch</option>
+            </select>
+            <input id="douyinTranslateModel" placeholder="gpt-4o-mini hoặc gemini-2.5-flash">
+            <label>Phong cách dịch</label>
+            <select id="douyinSubtitleStyle">
+              <option value="tự nhiên, rõ nghĩa, phù hợp video mạng xã hội">Tự nhiên, dễ đọc</option>
+              <option value="dịch sát nghĩa để biên tập lại">Sát nghĩa để biên tập</option>
+              <option value="ngắn gọn, đúng nhịp phụ đề, văn nói Gen Z vừa phải">Ngắn gọn cho phụ đề</option>
+            </select>
+            <label>Thư mục xuất file</label>
+            <div class="button-row">
+              <button id="douyinPickOutputDir">Chọn thư mục xuất</button>
+              <span id="douyinOutputDirText" class="small-note">Chưa chọn, app sẽ dùng thư mục Videos.</span>
+            </div>
+            <label class="remember-login-row"><input id="douyinBurnSub" type="checkbox"> <span>Xuất thêm video MP4 có phụ đề Việt gắn sẵn</span></label>
+
+            
+            <div id="douyinAspectRatioBox" class="subtitle-style-box">
+              <h4>Định dạng khung video đầu ra</h4>
+              <label>Tỉ lệ khung</label>
+              <select id="douyinOutputAspectRatio">
+                <option value="original">Giữ nguyên khung gốc</option>
+                <option value="1:1">1:1 (1080x1080)</option>
+                <option value="16:9">16:9 (1920x1080)</option>
+                <option value="9:16">9:16 (1080x1920)</option>
+              </select>
+              <p class="small-note">App sẽ scale + pad để giữ đúng tỉ lệ gốc, tránh méo hình. Phù hợp cho Facebook, TikTok, YouTube và các nền tảng mạng xã hội.</p>
+            </div>
+
+            <div id="douyinSubtitleStyleBox" class="subtitle-style-box">
+              <h4>Style phụ đề tiếng Việt</h4>
+              <label>Font chữ Việt hóa</label>
+              <select id="douyinSubtitleFont">
+                <option value="Arial">Arial</option>
+                <option value="Segoe UI">Segoe UI</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Noto Sans">Noto Sans</option>
+              </select>
+
+              <label>Cỡ chữ</label>
+              <input id="douyinSubtitleFontSize" type="number" min="14" max="48" value="24">
+
+              <label>Màu nền chữ</label>
+              <select id="douyinSubtitleBoxColor">
+                <option value="yellow">Vàng</option>
+                <option value="white">Trắng</option>
+                <option value="lightyellow">Vàng nhạt</option>
+                <option value="transparentblack">Đen mờ</option>
+              </select>
+
+              <label>Màu chữ</label>
+              <select id="douyinSubtitleTextColor">
+                <option value="black">Đen</option>
+                <option value="white">Trắng</option>
+              </select>
+
+              <label>Khoảng cách phụ đề với đáy video</label>
+              <input id="douyinSubtitleMarginV" type="number" min="10" max="120" value="42">
+
+              <p class="small-note">Khuyến nghị: chữ đen + nền vàng/trắng để dễ đọc. Font Arial/Segoe UI/Tahoma hỗ trợ tiếng Việt tốt trên Windows.</p>
+            </div>
+
+            
+            <label>FFmpeg</label>
+            <div class="button-row">
+              <button id="douyinPickFfmpegBtn">Chọn ffmpeg.exe</button>
+              <span id="douyinFfmpegText" class="small-note">Chưa chọn FFmpeg.</span>
+            </div>
+            <p class="small-note">FFmpeg cần để tách audio và gắn phụ đề. Có thể chọn trực tiếp file ffmpeg.exe, không cần thêm PATH.</p>
+        
+          </div>
+
+          <div class="ai-card">
+            <h3>Queue video Douyin</h3>
+            <div class="button-row">
+              <button id="douyinPickVideos" class="blue-btn">Chọn video</button>
+              <button id="douyinRunQueue" class="blue-btn">Tạo phụ đề/dịch</button>
+              <button id="douyinClearQueue" class="red-btn">Xóa queue</button>
+              <button id="douyinSendToTtsBtn">Gửi bản dịch sang Voice Việt</button>
+              <button id="douyinCopyWebPromptBtn">Copy prompt xử lý web</button>
+              <button id="douyinOpenChatGPTWebBtn">Mở ChatGPT Web</button>
+              <button id="douyinOpenGeminiWebBtn">Mở Gemini Web</button>
+            </div>
+            <div class="table-wrap">
+              <table class="account-table">
+                <thead><tr><th>STT</th><th>Video</th><th>Dung lượng</th><th>Status</th><th>Kết quả</th><th>Hành động</th></tr></thead>
+                <tbody id="douyinQueueBody"></tbody>
+              </table>
+            </div>
+            <textarea id="douyinLog" readonly>Sub Douyin/Việt log.</textarea>
+          </div>
+        </div>
+      </section>
+
+
+      
+      <section id="aiEngineerView" class="hidden full-panel view admin-only">
+        <h2>Trợ lý AI Engineer</h2>
+        <p>Chỉ admin được dùng. Trợ lý này giúp phân tích lỗi, viết hướng sửa, tạo patch mẫu và hướng dẫn build/update app JTM. Nếu OpenAI hết quota nhưng có Gemini key, app sẽ tự fallback sang Gemini.</p>
+        <div class="settings-grid">
+          <div class="ai-card">
+            <h3>Yêu cầu cho AI</h3>
+            <label>Provider</label><select id="aiEngineerProvider"><option value="openai">OpenAI</option><option value="gemini">Gemini</option></select>
+            <label>Model</label><input id="aiEngineerModel" placeholder="gpt-4o-mini hoặc gemini-2.5-flash">
+            <label>OpenAI API Key</label><input id="aiEngineerOpenAIKey" type="password" placeholder="sk-...">
+            <div class="button-row">
+              <button id="aiOpenChatGPTWebBtn">Mở ChatGPT Web</button>
+              <button id="aiOpenGeminiWebBtn">Mở Gemini Web</button>
+            </div>
+            <p class="small-note">ChatGPT/Gemini web chỉ dùng thủ công trong cửa sổ app. API vẫn cần billing/quota riêng để app tự động xử lý.</p>
+            <label>Gemini API Key</label><input id="aiEngineerGeminiKey" type="password" placeholder="AIza...">
+            <label>Chế độ</label><select id="aiEngineerMode"><option value="debug">Debug lỗi</option><option value="feature">Thêm tính năng</option><option value="ui">Sửa UI/CSS</option><option value="build">GitHub/build/deploy</option><option value="patch">Tạo patch mẫu</option></select>
+            <label>Yêu cầu</label><textarea id="aiEngineerRequest" placeholder="Mô tả lỗi hoặc tính năng cần làm..."></textarea>
+            <label>Log lỗi</label><textarea id="aiEngineerLog" placeholder="Dán log lỗi/stack trace..."></textarea>
+            <label>Ngữ cảnh bổ sung</label><textarea id="aiEngineerContext" placeholder="Bản app, thao tác gây lỗi, mong muốn..."></textarea>
+            <div class="button-row"><button id="aiEngineerAskBtn" class="blue-btn">Hỏi Trợ lý AI</button><button id="aiEngineerClearBtn">Xóa nội dung</button></div>
+          </div>
+          <div class="ai-card">
+            <h3>Kết quả</h3>
+            <textarea id="aiEngineerAnswer" readonly placeholder="Kết quả phân tích sẽ hiện ở đây..."></textarea>
+            <div class="button-row"><button id="aiEngineerCopyBtn">Copy kết quả</button><button id="aiEngineerSaveBtn">Lưu note</button></div>
+            <p class="small-note">AI Engineer đề xuất hướng sửa. Admin nên backup source và test trước khi build.</p>
+
+        <div id="aiControlPanel" class="ai-control-panel">
+          <h3>AI Control Center — Quyền admin cao nhất</h3>
+          <p class="small-note">Trợ lý AI có thể đề xuất sửa code, chạy terminal, backup source và push GitHub. Mọi thao tác nguy hiểm đều cần admin bấm xác nhận trước khi chạy.</p>
+
+          <div class="control-grid">
+            <div class="control-card">
+              <h4>1. Source dự án</h4>
+              <div class="button-row">
+                <button id="aiControlPickSourceBtn">Chọn thư mục source</button>
+                <button id="aiControlBackupBtn" class="blue-btn">Backup source</button>
+              </div>
+              <input id="aiControlSourceDir" placeholder="D:\\DEMO\\JTM_v9_9_Source">
+              <label class="remember-login-row"><input id="aiControlApproveBackup" type="checkbox"> <span>Tôi xác nhận backup source</span></label>
+            </div>
+
+            <div class="control-card">
+              <h4>2. Terminal có xác nhận</h4>
+              <p class="small-note">Ví dụ push GitHub: git add . && git commit -m "Update" && git push -u origin main --force</p>
+              <textarea id="aiControlCommand" placeholder="Nhập lệnh terminal cần chạy..."></textarea>
+              <label class="remember-login-row"><input id="aiControlApproveTerminal" type="checkbox"> <span>Tôi xác nhận cho phép chạy lệnh terminal này</span></label>
+              <button id="aiControlRunCommandBtn" class="red-btn">Chạy lệnh đã xác nhận</button>
+            </div>
+
+            <div class="control-card">
+              <h4>3. Ghi file có xác nhận</h4>
+              <input id="aiControlFilePath" placeholder="Đường dẫn file cần ghi/sửa">
+              <textarea id="aiControlFileContent" placeholder="Nội dung file/patch cần ghi..."></textarea>
+              <label class="remember-login-row"><input id="aiControlApproveWrite" type="checkbox"> <span>Tôi xác nhận cho phép ghi file này</span></label>
+              <button id="aiControlWriteFileBtn" class="red-btn">Ghi file đã xác nhận</button>
+            </div>
+
+            <div class="control-card">
+              <h4>4. Log thao tác</h4>
+              <textarea id="aiControlLog" readonly>AI Control log.</textarea>
+            </div>
+          </div>
+        </div>
+
+          </div>
+        </div>
+      </section>
+
+
+      
+      <section id="ttsOhFreeView" class="hidden full-panel view">
+        <h2>Voice Việt — TTS OhFree</h2>
+        <p>Tích hợp web TTS OhFree vào app để tạo voice tiếng Việt. Do chưa có API chính thức công khai, app mở web trong cửa sổ riêng và hỗ trợ copy nhanh nội dung tiếng Việt để dán vào web.</p>
+
+        <div class="settings-grid">
+          <div class="ai-card">
+            <h3>Nội dung cần đọc</h3>
+            <textarea id="ttsOhFreeText" placeholder="Dán bản dịch tiếng Việt hoặc kịch bản cần tạo voice..."></textarea>
+            <div class="button-row">
+              <button id="ttsOhFreeCopyBtn">Copy nội dung</button>
+              <button id="ttsOhFreeOpenBtn" class="blue-btn">Mở TTS OhFree</button>
+              <button id="ttsOhFreeHistoryBtn">Mở Voice Clone History</button>
+            </div>
+            <p class="small-note">Cách dùng: Copy nội dung → Mở TTS OhFree → chọn voice tiếng Việt → dán nội dung → generate/download audio.</p>
+          </div>
+
+          <div class="ai-card">
+            <h3>Ghi chú tích hợp</h3>
+            <p>Hiện app không gọi API ẩn của TTS OhFree để tránh hỏng khi web đổi request hoặc vi phạm điều khoản. Nếu Jordan có tài liệu API/chìa khóa chính thức của dịch vụ này, có thể nâng cấp thành tạo voice tự động.</p>
+            <textarea id="ttsOhFreeLog" readonly>TTS OhFree log.</textarea>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="settingsView" class="hidden full-panel view">
+        <h2>Cài đặt</h2>
+        <div class="settings-grid">
+          <div class="ai-card">
+            <h3>Gỡ cài đặt Jordan Task Manager</h3>
+            <p>Gỡ app, cache/profile riêng và dữ liệu local của Jordan Task Manager.</p>
+            <button id="deepUninstallBtn" class="red-btn">Gỡ cài đặt app</button>
+          </div>
+          <div class="ai-card">
+            <h3>Gỡ Node.js</h3>
+            <p>Node.js chỉ cần trên máy build. Nếu không dùng build nữa, có thể gỡ. Hãy cẩn thận nếu phần mềm khác đang dùng Node.js.</p>
+            <button id="uninstallNodeBtn" class="red-btn">Gỡ Node.js / mở Apps Settings</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="statusBar" class="status">Sẵn sàng.</div>
+    </main>
+  </div>
+
+  <script src="./renderer.js"></script>
+
+  <div id="accountModal" class="modal hidden">
+    <div class="modal-card">
+      <h3 id="accountModalTitle">Thêm tài khoản</h3>
+      <label>Tên tài khoản</label><input id="accountNameInput" placeholder="Ví dụ: TikTok Long Finance">
+      <label>ID tài khoản</label><input id="accountIdInput" placeholder="Ví dụ: @longfinance hoặc page id">
+      <label>Nền tảng</label><select id="accountPlatformInput"><option value="tiktok">TikTok</option><option value="facebook">Facebook</option><option value="youtube">YouTube</option><option value="mixed">Mixed</option></select>
+      <label>Trạng thái</label><select id="accountStatusInput"><option>Live</option><option>Die</option><option>Checkpoint</option><option>Pending</option></select>
+      <label>Proxy</label><input id="accountProxyInput" placeholder="ip:port hoặc user:pass@ip:port">
+      <div class="modal-actions"><button id="saveAccountModal" class="blue-btn">Lưu tài khoản</button><button id="cancelAccountModal">Hủy</button></div>
+    </div>
+  </div>
+  <div id="proxyModal" class="modal hidden">
+    <div class="modal-card">
+      <h3 id="proxyModalTitle">Thêm proxy</h3>
+      <label>Proxy</label><input id="proxyValueInput" placeholder="ip:port hoặc user:pass@ip:port">
+      <label>Ghi chú</label><input id="proxyNoteInput" placeholder="Ví dụ: Viettel HCM, US residential...">
+      <label>Trạng thái</label><select id="proxyStatusInput"><option>Chưa kiểm tra</option><option>Live</option><option>Die</option></select>
+      <div class="modal-actions"><button id="saveProxyModal" class="blue-btn">Lưu proxy</button><button id="cancelProxyModal">Hủy</button></div>
+    </div>
+  </div>
+
+</body>
+</html>

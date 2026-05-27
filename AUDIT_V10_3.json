@@ -1,0 +1,28 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "subtitle_helper": true,
+    "boxed_style": true,
+    "html_subtitle_controls": true,
+    "renderer_subtitle_payload": true,
+    "handlers": {
+      "douyin:processVideo": 1,
+      "ttsOhFree:open": 1,
+      "aiEngineer:ask": 1
+    }
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

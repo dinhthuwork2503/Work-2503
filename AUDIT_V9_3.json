@@ -1,0 +1,26 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "team_config_handler": true,
+    "team_config_file": true,
+    "preload_get_team_config": true,
+    "load_team_config": true,
+    "login_fields_public": true,
+    "dev_setup_hidden": true,
+    "bootstrap_hidden": true
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

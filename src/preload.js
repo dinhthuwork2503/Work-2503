@@ -1,0 +1,65 @@
+
+const { contextBridge, ipcRenderer } = require("electron");
+
+contextBridge.exposeInMainWorld("JordanAPI", {
+  storageGet: () => ipcRenderer.invoke("storage:get"),
+  storageSet: (data) => ipcRenderer.invoke("storage:set", data),
+  appCopyText: (text) => ipcRenderer.invoke("app:copyText", text),
+  ttsOhFreeCopyText: (text) => ipcRenderer.invoke("ttsOhFree:copyText", text),
+  ttsOhFreeOpen: (target) => ipcRenderer.invoke("ttsOhFree:open", target),
+  openAIWeb: (target) => ipcRenderer.invoke("aiWeb:open", target),
+  douyinPickFfmpegExe: () => ipcRenderer.invoke("douyin:pickFfmpegExe"),
+  aiControlReadTextFile: (payload) => ipcRenderer.invoke("aiControl:readTextFile", payload),
+  aiControlWriteFile: (payload) => ipcRenderer.invoke("aiControl:writeFile", payload),
+  aiControlRunTerminal: (payload) => ipcRenderer.invoke("aiControl:runTerminal", payload),
+  aiControlBackupSource: (payload) => ipcRenderer.invoke("aiControl:backupSource", payload),
+  aiControlPickSourceDir: (payload) => ipcRenderer.invoke("aiControl:pickSourceDir", payload),
+  aiEngineerSaveNote: (payload) => ipcRenderer.invoke("aiEngineer:saveNote", payload),
+  aiEngineerAsk: (payload) => ipcRenderer.invoke("aiEngineer:ask", payload),
+  douyinProcessVideo: (payload) => ipcRenderer.invoke("douyin:processVideo", payload),
+  douyinPickOutputDir: () => ipcRenderer.invoke("douyin:pickOutputDir"),
+  douyinPickVideos: () => ipcRenderer.invoke("douyin:pickVideos"),
+  getTeamConfig: () => ipcRenderer.invoke("config:getTeamConfig"),
+  authDeleteUser: (payload) => ipcRenderer.invoke("auth:deleteUser", payload),
+  authUpdateUser: (payload) => ipcRenderer.invoke("auth:updateUser", payload),
+  authCreateUser: (payload) => ipcRenderer.invoke("auth:createUser", payload),
+  authListUsers: (payload) => ipcRenderer.invoke("auth:listUsers", payload),
+  authLogin: (payload) => ipcRenderer.invoke("auth:login", payload),
+  authBootstrapAdmin: (payload) => ipcRenderer.invoke("auth:bootstrapAdmin", payload),
+
+  testSupabase: (config) => ipcRenderer.invoke("cloud:testSupabase", config),
+  pullCloudAll: (config) => ipcRenderer.invoke("cloud:pullAll", config),
+  pushCloudAll: (payload) => ipcRenderer.invoke("cloud:pushAll", payload),
+  sendToGoogleSheet: (payload) => ipcRenderer.invoke("cloud:sendToGoogleSheet", payload),
+
+  listEdgeProfiles: () => ipcRenderer.invoke("edge:listProfiles"),
+  openEdgeUrl: (payload) => ipcRenderer.invoke("edge:openUrl", payload),
+  tiktokAutoUpload: (payload) => ipcRenderer.invoke("tiktok:autoUpload", payload),
+  socialAutoUpload: (payload) => ipcRenderer.invoke("social:autoUpload", payload),
+
+  chooseImage: () => ipcRenderer.invoke("dialog:chooseImage"),
+  chooseVideo: () => ipcRenderer.invoke("dialog:chooseVideo"),
+  chooseFolder: () => ipcRenderer.invoke("dialog:chooseFolder"),
+  scanVideos: (folder) => ipcRenderer.invoke("file:scanVideos", folder),
+  showFile: (filePath) => ipcRenderer.invoke("file:show", filePath),
+  openExternal: (url) => ipcRenderer.invoke("external:open", url),
+  longfOpenAdmin: () => ipcRenderer.invoke("longf:openAdmin"),
+  longfAutoPostOne: (item) => ipcRenderer.invoke("longf:autoPostOne", item),
+  longfCheckSession: () => ipcRenderer.invoke("longf:checkSession"),
+  longfExtractApiMap: () => ipcRenderer.invoke("longf:extractApiMap"),
+  longfUploadVideoDirect: (videoPath) => ipcRenderer.invoke("longf:uploadVideoDirect", videoPath),
+  longfCreateVideoDirect: (item) => ipcRenderer.invoke("longf:createVideoDirect", item),
+  longfBulkCreateVideoDirect: (items) => ipcRenderer.invoke("longf:bulkCreateVideoDirect", items),
+
+  importCsv: () => ipcRenderer.invoke("account:importCsv"),
+  exportCsv: (csv, defaultName) => ipcRenderer.invoke("account:exportCsv", csv, defaultName),
+
+  openaiText: (payload) => ipcRenderer.invoke("api:openaiText", payload),
+  geminiText: (payload) => ipcRenderer.invoke("api:geminiText", payload),
+  openaiImage: (payload) => ipcRenderer.invoke("api:openaiImage", payload),
+  geminiImage: (payload) => ipcRenderer.invoke("api:geminiImage", payload),
+
+  selfCheck: () => ipcRenderer.invoke("system:selfCheck"),
+  deepUninstall: (options) => ipcRenderer.invoke("system:deepUninstall", options),
+  uninstallNode: (options) => ipcRenderer.invoke("system:uninstallNode", options)
+});

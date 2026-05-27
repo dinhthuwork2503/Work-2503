@@ -1,0 +1,31 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "renamed_feature": true,
+    "openai_transcript_model": true,
+    "gemini_model_dropdown": true,
+    "web_fallback_buttons": true,
+    "web_prompt_renderer": true,
+    "generic_copy_handler": true,
+    "handlers": {
+      "douyin:processVideo": 1,
+      "aiEngineer:ask": 1,
+      "aiWeb:open": 1,
+      "app:copyText": 1
+    }
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

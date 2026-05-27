@@ -1,0 +1,51 @@
+{
+  "removed_readmes": [
+    "README_V14_DESKTOP_EDITION.txt",
+    "README_V1_CLOUD_SYNC_EDITION.txt",
+    "README_NO_NODE_NO_PYTHON_RELEASE_WORKFLOW.txt",
+    "README_V2_CLOUD_SYNC_UPDATE.txt",
+    "README_V3_QA_STABLE_UPDATE.txt",
+    "README_V4_AI_BOT_POSTING_UPDATE.txt",
+    "README_V5_VIDEO_UI_CLEAN_UPDATE.txt",
+    "README_V6_LONGF_BULK_POSTING_UPDATE.txt",
+    "README_V7_LONGF_API_CONNECTOR_UPDATE.txt",
+    "README_V7_1_LONGF_SESSION_FIX.txt",
+    "README_V7_2_LONGF_SMART_POSTING_UI.txt",
+    "README_V7_3.txt",
+    "README_V7_4.txt",
+    "README_V7_5.txt",
+    "README_V7_6.txt",
+    "README_V7_7.txt",
+    "README_V7_8_HOTFIX.txt",
+    "README_V7_9_SESSION_BROWSER_CONTEXT.txt",
+    "README_V8_LONGF_STABLE.txt",
+    "README_V8_1_LONGF_WINDOW_SESSION_FIX.txt",
+    "README_V8_2_HOTFIX.txt"
+  ],
+  "duplicate_audit": {
+    "main_longfAdminWindowRef_declarations": 1,
+    "main_LONGF_PARTITION_declarations": 1,
+    "handler_longf:openAdmin": 1,
+    "handler_longf:checkSession": 1,
+    "handler_longf:createVideoDirect": 1,
+    "handler_longf:extractApiMap": 1,
+    "handler_longf:uploadVideoDirect": 1
+  },
+  "syntax_check": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "handlers": {
+      "douyin:pickVideos": 1,
+      "douyin:pickOutputDir": 1,
+      "douyin:processVideo": 1,
+      "auth:login": 1,
+      "longf:createVideoDirect": 1
+    },
+    "preload_douyin": true,
+    "html_douyin_view": true,
+    "renderer_douyin": true
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

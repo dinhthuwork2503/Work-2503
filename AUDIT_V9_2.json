@@ -1,0 +1,41 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "handlers": {
+      "auth:bootstrapAdmin": 1,
+      "auth:login": 1,
+      "auth:listUsers": 1,
+      "auth:createUser": 1,
+      "auth:updateUser": 1,
+      "auth:deleteUser": 1,
+      "longf:openAdmin": 1,
+      "longf:checkSession": 1
+    },
+    "preload_auth": {
+      "authBootstrapAdmin": true,
+      "authLogin": true,
+      "authListUsers": true,
+      "authCreateUser": true,
+      "authUpdateUser": true,
+      "authDeleteUser": true
+    },
+    "auth_gate_present": true,
+    "users_view_present": true,
+    "schema_app_users": true,
+    "schema_auth_logs": true
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

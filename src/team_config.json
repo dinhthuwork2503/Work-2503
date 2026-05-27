@@ -1,0 +1,7 @@
+{
+  "supabaseUrl": "https://lixwhjebyzsxamgqblgw.supabase.co",
+  "supabaseAnonKey": "PASTE_SUPABASE_ANON_KEY_HERE",
+  "showBootstrapAdmin": false,
+  "appName": "Jordan Task Manager",
+  "teamMode": true
+}

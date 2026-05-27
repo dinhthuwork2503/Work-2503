@@ -1,0 +1,28 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "retry_helpers": true,
+    "smart_retry": true,
+    "transcribe_reverse_fallback": true,
+    "friendly_renderer": true,
+    "handlers": {
+      "douyin:processVideo": 1,
+      "aiEngineer:ask": 1,
+      "ttsOhFree:open": 1
+    }
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

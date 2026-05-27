@@ -1,0 +1,28 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "aspect_helpers": true,
+    "subtitle_filter_chain": true,
+    "html_ratio_select": true,
+    "renderer_ratio_payload": true,
+    "handlers": {
+      "douyin:processVideo": 1,
+      "aiEngineer:ask": 1,
+      "ttsOhFree:open": 1
+    }
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

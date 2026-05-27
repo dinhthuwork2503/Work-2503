@@ -1,0 +1,31 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "handlers": {
+      "aiControl:pickSourceDir": 1,
+      "aiControl:backupSource": 1,
+      "aiControl:runTerminal": 1,
+      "aiControl:writeFile": 1,
+      "aiEngineer:ask": 1
+    },
+    "approval_required": true,
+    "admin_guard": true,
+    "preload_control": true,
+    "html_control": true,
+    "renderer_control": true
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

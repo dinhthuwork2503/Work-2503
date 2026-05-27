@@ -1,0 +1,30 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "handlers": {
+      "aiEngineer:ask": 1,
+      "aiEngineer:saveNote": 1,
+      "auth:login": 1,
+      "douyin:processVideo": 1,
+      "longf:createVideoDirect": 1
+    },
+    "admin_guard_main": true,
+    "preload_ai": true,
+    "html_ai_view": true,
+    "renderer_ai": true
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "audit": {
+    "bare_async_lines": [],
+    "handlers": {
+      "douyin:pickFfmpegExe": 1,
+      "douyin:processVideo": 1,
+      "aiEngineer:ask": 1
+    },
+    "ffmpeg_custom_path": true,
+    "ai_fallback_gemini": true,
+    "preload_ffmpeg": true,
+    "html_ffmpeg": true,
+    "renderer_ffmpeg": true
+  },
+  "syntax": {
+    "src/main.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/preload.js": {
+      "returncode": 0,
+      "stderr": ""
+    },
+    "src/renderer.js": {
+      "returncode": 0,
+      "stderr": ""
+    }
+  }
+}
